@@ -1,0 +1,1 @@
+exec gunicorn -c gunicorn.conf.py --bind 0.0.0.0:6000 wsgi:app "$@"

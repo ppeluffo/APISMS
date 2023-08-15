@@ -1,0 +1,42 @@
+version: '3.1'
+
+services:
+
+  apisms:
+    build:
+      context: APISMS
+      dockerfile: Dockerfile
+    image: spymovil/apisms:latest
+    ports:
+      - 6000:6000
+    logging:
+      driver: "syslog"
+      options:
+        syslog-address: "udp://192.168.0.20:514"
+        tag: "SERVERSMS" 
+    volumes:
+    - /home/pablo/Spymovil/dbase:/dbase
+    environment:
+      DBNAME: "/dbase/sms.db"
+
+  smsdaemon:
+    build:
+      context: SMSDAEMON
+      dockerfile: Dockerfile
+    image: spymovil/smsdaemon:latest
+    logging:
+      driver: "syslog"
+      options:
+        syslog-address: "udp://192.168.0.20:514"
+        tag: "SERVERSMS"
+    devices:
+    - "/dev/ttyUSB0:/dev/ttyUSB0" 
+    environment:
+      PYTHONUNBUFFERED: 1
+      SERIALPORT: '/dev/ttyUSB0'
+      SLEEPTIME: 30
+      APISMS_HOST: apisms
+      APISMS_PORT: 6000
+    depends_on:
+      - apisms
+

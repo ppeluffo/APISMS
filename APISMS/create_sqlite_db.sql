@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS sms_table;
+
+CREATE TABLE sms_table (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    received_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    send_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    sms_numero TEXT NOT NULL,
+    sms_mensaje TEXT NOT NULL,
+    estado TEXT NOT NULL,
+    tag TEXT NOT NULL
+);
